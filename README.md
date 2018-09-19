@@ -4,7 +4,8 @@ We have 2 files named fang_et_al_genotypes.txt and snp_position.txt.
 
 
 
-## fang\_et\_al\_genotypes
+## fang\_et\_al\_genotypes  
+
 
 	-    **Overview** - how the data is formatted `$ head -n 1  fang_et_al_genotypes.txt`
 
@@ -16,7 +17,7 @@ We have 2 files named fang_et_al_genotypes.txt and snp_position.txt.
 
 	- **Inside the file** - open the file to see how the data exactly look like `$ less fang_et_al_genotypes.txt`
 
-<font color=grey>**_Summary_**</font>  
+**_Summary_**
 &emsp;&emsp;Up to now, we know that this fang\_et\_al\_genotypes.txt file includes **2782 samples** with **983 SNPs** information coded as **A/T/C/G/?** ( missing data encoded as "?" ). These samples are from different groups ("ZMMIL, ZMMLR, ZMMMR, ZMPBA, etc). The file size is **11M**, which includes **2783 lines** and **986 columns**.  
 
 
@@ -25,7 +26,7 @@ We have 2 files named fang_et_al_genotypes.txt and snp_position.txt.
 
 	_(similar with what we do with above)_  
 
-	- **Overview** - how the data is formatted `$ head -n 1 snp_position.txt`  
+	- ** Overview ** - how the data is formatted `$ head -n 1 snp_position.txt`  
 	
 	- **Column & Lines** - how many numbers of columns and lines   
 	_COLUMN:_  ``$ awk -F `\t` {print NF; exit} snp_position.txt ``   
