@@ -46,9 +46,22 @@ _(similar with what we do with above)_
 				
 	 - [x] `cut` command is to extract three needed columns from the original file; 
 	 - [x] `head` and `tail` commands help us keep the header at top when sorting;
-	 - [x] `sort` command is to do sorting by the 1 column (SNP_ID).
+	 - [x] `sort` command is to do sorting by the 1st column (SNP_ID).
 
 
-1. Separate _Maize_ and _Teosinte_ genotypes
+2. Separate _Maize_ and _Teosinte_ genotypes
 
-	```$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 ) \  >maize_transposed_genotype.txt```   
+	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
+				
+	 - [x] `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group", which are maize samples and the header; 
+	 - [x] `cut` commands is to remove the 2 columns we don'w need;
+	 - [x] `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt;
+	 - [x] `head` and `tail` command is to keep the header at top;
+	 - [x] `sort` command is to sort by the 1st column (snp
+	 - [x] new file saved as "maize_transposed_genotype.txt".  
+	   
+(then we will do the same thing to Teosinte)
+
+	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
+
+3. 
