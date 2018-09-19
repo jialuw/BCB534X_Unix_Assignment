@@ -37,12 +37,13 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
 
 # Data Processing  
 
-##SNP information preparation    
+##SNP information preparation  
+    
 	`$ cut -f 1, 3, 4 snp_position.txt | (head -n 1 && tail -n +2 | sort -k1, 1 ) > snp_infor.txt`  
   
- - [x] `cut` command is to extract three needed columns from the original file;   
- - [x] `head` and `tail` commands help us keep the header at top when sorting;  
- - [x] `sort` command is to do sorting by the 1st column (SNP_ID).    
+ -  `cut` command is to extract three needed columns from the original file;   
+ -  `head` and `tail` commands help us keep the header at top when sorting;  
+ -  `sort` command is to do sorting by the 1st column (SNP_ID).    
 ##Separate _Maize_ and _Teosinte_ genotypes   
 	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
 	`$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >teosinte_transposed_genotype.txt`  
