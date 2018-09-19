@@ -7,15 +7,15 @@ We have 2 files named fang_et_al_genotypes.txt and snp_position.txt.
 ## fang\_et\_al\_genotypes  
   
 
-	- **Overview** - how the data is formatted `$ head -n 1  fang_et_al_genotypes.txt`
+	- **Overview**: how the data is formatted `$ head -n 1  fang_et_al_genotypes.txt`
 
-	- **Column & Lines** - how many numbers of columns and lines   
+	- **Column & Lines**: how many numbers of columns and lines   
 	_COLUMN:_  ``$ awk -F `\t` {print NF; exit} fang_et_al_genotypes.txt ``   
     _LINE:_  `$ wc -l fang_et_al_genotypes.txt`
 
-	- **File size** - how large is the file `$ du -h fang_et_al_genotypes.txt `
+	- **File size**:how large is the file `$ du -h fang_et_al_genotypes.txt `
 
-	- **Inside the file** - open the file to see how the data exactly look like `$ less fang_et_al_genotypes.txt`
+	- **Inside the file**: open the file to see how the data exactly look like `$ less fang_et_al_genotypes.txt`
 
 **_Summary_**  
 
