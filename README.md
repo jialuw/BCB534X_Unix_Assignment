@@ -51,4 +51,4 @@ _(similar with what we do with above)_
 
 1. Separate _Maize_ and _Teosinte_ genotypes
 
-	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 ) \  >maize_transposed_genotype.txt`   
+	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 ) \  >maize_transposed_genotype.txt`	   
