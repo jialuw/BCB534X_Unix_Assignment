@@ -37,14 +37,14 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
 
 # Data Processing  
 
-##SNP information preparation  
+## SNP information preparation  
     
 	`$ cut -f 1, 3, 4 snp_position.txt | (head -n 1 && tail -n +2 | sort -k1, 1 ) > snp_infor.txt`  
   
  -  `cut` command is to extract three needed columns from the original file;   
  -  `head` and `tail` commands help us keep the header at top when sorting;  
  -  `sort` command is to do sorting by the 1st column (SNP_ID).    
-##Separate _Maize_ and _Teosinte_ genotypes   
+## Separate _Maize_ and _Teosinte_ genotypes   
 	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
 	`$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >teosinte_transposed_genotype.txt`  
  - [x] `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group", which are maize samples and the header; 
@@ -54,7 +54,7 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - [x] `sort` command is to sort by the 1st column (snp
  - [x] new file saved as "maize\_transposed\_genotype.txt".  
 
-##Combine genotype with SNP position      
+## Combine genotype with SNP position      
 	`$join -1 1 -2 1 –t ‘\t’ snp_infor.txt maize_transposed_genotype.txt > maize_joined.txt`  
 	`$join -1 1 -2 1 –t ‘\t’ snp_infor.txt teosinte_transposed_genotype.txt > teosinte_joined.txt`				
  - [x] `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
