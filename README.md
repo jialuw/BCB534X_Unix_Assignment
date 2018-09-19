@@ -44,24 +44,31 @@ _(similar with what we do with above)_
  
 	`$ cut -f 1, 3, 4 snp_position.txt | (head -n 1 && tail -n +2 | sort -k1, 1 ) > snp_infor.txt`    
 				
-	 - [x] `cut` command is to extract three needed columns from the original file; 
-	 - [x] `head` and `tail` commands help us keep the header at top when sorting;
-	 - [x] `sort` command is to do sorting by the 1st column (SNP_ID).
+&emsp;&emsp;- [x] `cut` command is to extract three needed columns from the original file;  
+&emsp;&emsp;- [x] `head` and `tail` commands help us keep the header at top when sorting;  
+&emsp;&emsp;- [x] `sort` command is to do sorting by the 1st column (SNP_ID).
 
 
 2. Separate _Maize_ and _Teosinte_ genotypes
 
 	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
-				
-	 - [x] `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group", which are maize samples and the header; 
-	 - [x] `cut` commands is to remove the 2 columns we don'w need;
-	 - [x] `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt;
-	 - [x] `head` and `tail` command is to keep the header at top;
-	 - [x] `sort` command is to sort by the 1st column (snp
-	 - [x] new file saved as "maize_transposed_genotype.txt".  
-	   
-(then we will do the same thing to Teosinte)
+
+&emsp;&emsp;- [x] `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group", which are maize samples and the header;  
+&emsp;&emsp;- [x] `cut` commands is to remove the 2 columns we don'w need;  
+&emsp;&emsp;- [x] `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt;  
+&emsp;&emsp;- [x] `head` and `tail` command is to keep the header at top;  
+&emsp;&emsp;- [x] `sort` command is to sort by the 1st column (snp  
+&emsp;&emsp;- [x] new file saved as "maize_transposed_genotype.txt".  
+	     
+_(then we will do the same thing to Teosinte)_
 
 	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
 
-3. 
+1. Combine genotype with SNP position
+
+	`$join -1 1 -2 1 –t ‘\t’ snp_infor.txt maize_transposed_genotype.txt > maize_joined.txt`  
+				
+	 - [x] `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
+	 - [x] new file saved as "maize_joined.txt"
+	  
+1. 
