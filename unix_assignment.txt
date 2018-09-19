@@ -12,3 +12,5 @@ $ join -1 1 -2 1 snp_sorted.txt maize_transposed_genotype.txt
 awk '$2 ==1' joint_maize.txt | sort -k3r,3 | sed 's/?/-/g' |tail -n 2
 
 awk '$2 == "unknown"' joint_maize.txt
+
+
