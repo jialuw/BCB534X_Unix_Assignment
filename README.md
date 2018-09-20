@@ -1,6 +1,6 @@
-We have 2 files named fang_et_al_genotypes.txt and snp_position.txt.  
+ 
 
-# Data Inspection  
+# _Data Inspection_    
 ## fang\_et\_al\_genotypes.txt  
   
 - **Overview**: how the data is formatted `$ head -n 1  fang_et_al_genotypes.txt`
@@ -35,33 +35,47 @@ _LINE:_  `$ wc -l snp_position.txt`
 **_Summary_**  
 From the above, we know that snp\_position.txt file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
 
-# Data Processing  
+# _Data Processing_  
 
 ## SNP information preparation  
-    
-	`$ cut -f 1, 3, 4 snp_position.txt | (head -n 1 && tail -n +2 | sort -k1, 1 ) > snp_infor.txt`  
+	$ cut -f 1,3,4 snp_position.txt | sort -k1,1 > snp_infor.txt  
   
- -  `cut` command is to extract three needed columns from the original file;   
- -  `head` and `tail` commands help us keep the header at top when sorting;  
+ -  `cut` command is to extract three needed columns from the original file;     
  -  `sort` command is to do sorting by the 1st column (SNP_ID).    
 ## Separate _Maize_ and _Teosinte_ genotypes   
-	`$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >maize_transposed_genotype.txt`  
-	`$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > (head –n 1 && tail –n +2 | sort –k1,1 )  >teosinte_transposed_genotype.txt`  
- - [x] `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group", which are maize samples and the header; 
- - [x] `cut` commands is to remove the 2 columns we don't need;
- - [x] `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt;
- - [x] `head` and `tail` command is to keep the header at top;
- - [x] `sort` command is to sort by the 1st column (snp
- - [x] new file saved as "maize\_transposed\_genotype.txt".  
+	$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk  > maize_genotype.txt  
+	$ sed 's/Sample_ID/SNP_ID' maize_genotype.txt | sort –k1,1 > maize_sgenotype.txt 
+	$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > teosinte_genotype.txt  
+	$ sed 's/Sample_ID/SNP_ID' teosinte_genotype.txt | sort –k1,1 > teosinte_sgenotype.txt
+ - `grep` command is to print out lines containing "ZMMIL", "ZMMLR" "ZMMMR" and "Group" ("ZMPBA", "ZMPIL" "ZMPJA" and "Group" for teosinte), which are maize samples and the header;
+ - `cut` commands is to remove the 2 columns we don't need;
+ - `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt and we can join them later;
+ - `sed` command is change the header in genotype file to the same with SNP file, so that we can join them later;
+ - `sort` command is to sort by the 1st column;
+ - new files saved as "maize\_sgenotype.txt" and "teosinte\_sgenotype.txt".  
 
 ## Combine genotype with SNP position      
-	`$join -1 1 -2 1 –t ‘\t’ snp_infor.txt maize_transposed_genotype.txt > maize_joined.txt`  
-	`$join -1 1 -2 1 –t ‘\t’ snp_infor.txt teosinte_transposed_genotype.txt > teosinte_joined.txt`				
- - [x] `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
- - [x] new file saved as "maize_joined.txt"
-##Generate files based on Chromosome position  
-###Increasing SNP order  
-`$ for 
+	$join -1 1 -2 1 –t $'\t' snp_infor.txt maize_sgenotype.txt > maize_joint.txt  
+	$join -1 1 -2 1 –t $'\t' snp_infor.txt teosinte_sgenotype.txt > teosinte_joint.txt				
+ - `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
+ - new file saved as "maize_joint.txt"
+## Separate SNPs based on Chromosome position  
+	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'' maize_joint.txt) > maize_chr$i.txt ; done
+	$ awk '$2 == "unknown"' maize_joint.txt > maize_unknown.txt
+	$ awk '$2 == "multiple"' maize_joint.txt > maize_multiple.txt
+	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' teosinte_joint.txt && awk '$2 == '$i'' teosinte_joint.txt) > teosinte_chr$i.txt ; done
+	$ awk '$2 == "unknown"' teosint_joint.txt > teosinte_unknown.txt
+	$ awk '$2 == "multiple"' teosinte_joint.txt > teosinte_multiple.txt
+ - `for` command is used to do the loop for 10 chromosomes;
+ - `awk` command is used to first print out header and then print out the records which feature pattern that field2 is the same with value of i;
+ - new file saved as "maize_chr$i.txt" and "teosinte_Chr$i.txt", in which i is the number of chromosome.
+
+##Sort SNPs within files 
+
+	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3,3n )> incr_maize_chr$i.txt ; done
+	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3r,3n ) | sed 's/?/-/g' > decr_maize_chr$i.txt ; done
+	$ for i in {1..10}; do (head -n 1 teosinte_chr$i.txt && tail -n +2 teosinte_chr$i.txt | sort -k3,3n )> incr_teosinte_chr$i.txt ; done
+	$ for i in {1..10}; do (head -n 1 teosinte_chr$i.txt && tail -n +2 teosinte_chr$i.txt | sort -k3r,3n ) | sed 's/?/-/g' > decr_teosinte_chr$i.txt ; done
+
  
 
-&emsp;
