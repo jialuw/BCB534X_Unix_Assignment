@@ -22,7 +22,7 @@ _LINE:_  `$ wc -l fang_et_al_genotypes.txt`
 - **Inside the file**: open the file to see how the data exactly look like `$ less fang_et_al_genotypes.txt`
 
 **_Summary_**  
-Up to now, we know that this fang\_et\_al\_genotypes.txt file includes **2782 samples** with **983 SNPs** information coded as **A/T/C/G/?** ( missing data encoded as "?" ). These samples are from different groups ("ZMMIL, ZMMLR, ZMMMR, ZMPBA, etc). The file size is **11M**, which includes **2783 lines** and **986 columns**.  
+Up to now, we know that this `fang\_et\_al\_genotypes.txt` file includes **2782 samples** with **983 SNPs** information coded as **A/T/C/G/?** ( missing data encoded as "?" ). These samples are from different groups ("ZMMIL, ZMMLR, ZMMMR, ZMPBA, etc). The file size is **11M**, which includes **2783 lines** and **986 columns**.  
 
 
 
@@ -41,7 +41,7 @@ _LINE:_  `$ wc -l snp_position.txt`
 - **Inside the file**： open the file to see how the data exactly look like `$ less snp_position_txt`  
 	
 **_Summary_**  
-From the above, we know that snp\_position.txt file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
+From the above, we know that `snp\_position.txt` file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
 
 # _Data Processing_ 
 ##1. Extract SNP information   
@@ -89,7 +89,7 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `head` and `tail` command are used to keep the header at top and then do the sorting on the other lines;
  - `sort` command is the key command here. We do the sorting based on the 3rd column, which shows the position of SNP. `-k3` means the result will be listed increasingly and `-k3r` means the reverse. `3n` means they are treated as numeric. 
  - `sed` command is used to switch the "?", which is encoded to be missing data, to "-";
- - new files are saves as incr\_maize\_chr$i.txt / incr\_teosinte\_chr$i.txt if their position is listed increasingly; decr\_maize\_chr$i.txt / decr\_teosinte\_chr$i.txt if their position is listed decreasingly.
+ - new files are saves as `incr_maize_chr$i.txt` / `incr_teosinte_chr$i.txt` if their position is listed increasingly; `decr_maize_chr$i.txt` / `decr_teosinte_chr$i.txt` if their position is listed decreasingly.
 # _Document classifying_  
   
 
@@ -101,7 +101,11 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `mv` commands are to move files to different directories;
  - Here we moved 12 maize-related files to `./maize` directory; 12 teosinte-related files to `./teosinte` directory; the other files generated during the above process and also the original 3 files are moved to `./process\_file`.
  
-Then we want to check if the files are correctly generated. Here we use `wc -l` command to see how many lines each file contains. `cd` command helps us go into different repositories. Within `./maize` and `./teosinte`, do `wc -l *` respectively.Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome. The results (part) are listed below:  
+Then we want to check if the files are correctly generated. `cd` command helps us go into different repositories.   
+Within `./maize` and `./teosinte`, do `wc -l *` respectively to check how many lines each file contains;
+Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome.   
+  
+####Compare the result and list them below:  
 
 
 	  
@@ -122,6 +126,7 @@ Then we want to check if the files are correctly generated. Here we use `wc -l` 
  | multiple | 5 | 6 | maize_multiple.txt| teosinte_multiple.txt |
  | unknown | 26 | 27 | maize_unknown.txt| teosinte_unknown.txt |   
  
-Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.
+Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.  
 
-:raising_hand: **_All 44 files are available now!!!_** 
+
+####:raising_hand: _All 44 files are ready now!!!_
