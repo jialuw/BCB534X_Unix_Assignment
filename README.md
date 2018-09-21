@@ -1,4 +1,12 @@
+#**UNIX_Assignment** 
+***
+####Files that will be used:  
+- [x] fang_et_al_genotypes.txt   
+- [x] snp_position.txt
+- [x]transpose.awk  
  
+***
+
 
 # _Data Inspection_    
 ## fang\_et\_al\_genotypes.txt  
@@ -24,7 +32,7 @@ _(similar with what we do with above)_
  
 - **Overview**： how the data is formatted `$ head -n 1 snp_position.txt`  
 	
-- **Column & Lines**： how many numbers of columns and lines   
+- **Columns & Lines**： how many numbers of columns and lines   
 _COLUMN:_  ``$ awk -F `\t` {print NF; exit} snp_position.txt ``   
 _LINE:_  `$ wc -l snp_position.txt`  
 
@@ -36,12 +44,13 @@ _LINE:_  `$ wc -l snp_position.txt`
 From the above, we know that snp\_position.txt file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
 
 # _Data Processing_ 
-## SNP information preparation  
+##1. Extract SNP information   
 	$ cut -f 1,3,4 snp_position.txt | sort -k1,1 > snp_infor.txt  
   
  -  `cut` command is to extract three needed columns from the original file;     
  -  `sort` command is to do sorting by the 1st column (SNP_ID).    
-## Separate _Maize_ and _Teosinte_ genotypes   
+   
+##2. Separate _Maize_ and _Teosinte_ genotypes   
 	$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk  > maize_genotype.txt  
 	$ sed 's/Sample_ID/SNP_ID/' maize_genotype.txt | sort –k1,1 > maize_sgenotype.txt 
 	$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > teosinte_genotype.txt  
@@ -53,12 +62,13 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `sort` command is to sort by the 1st column;
  - new files saved as "maize\_sgenotype.txt" and "teosinte\_sgenotype.txt".  
 
-## Combine genotype with SNP position      
+##3. Combine genotype with SNP position      
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt maize_sgenotype.txt > maize_joint.txt  
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt teosinte_sgenotype.txt > teosinte_joint.txt				
  - `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
- - new file saved as "maize_joint.txt"
-## Separate SNPs based on Chromosome   
+ - new file saved as "maize_joint.txt" . 
+ 
+##4. Separate SNPs based on Chromosome   
 	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'' maize_joint.txt) > maize_chr$i.txt ; done
 	$ awk '$2 == "unknown"' maize_joint.txt > maize_unknown.txt
 	$ awk '$2 == "multiple"' maize_joint.txt > maize_multiple.txt
@@ -69,7 +79,7 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `awk` command is used to first print out header and then print out the records which feature pattern that field2 is the same with value of i;
  - new file saved as "maize_chr$i.txt" and "teosinte_Chr$i.txt", in which i is the number of chromosome.
 
-## Sort SNPs based on position 
+##5. Sort SNPs based on position 
 
 	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3,3n )> incr_maize_chr$i.txt ; done
 	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3r,3n ) | sed 's/?/-/g' > decr_maize_chr$i.txt ; done
@@ -80,25 +90,21 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `sort` command is the key command here. We do the sorting based on the 3rd column, which shows the position of SNP. `-k3` means the result will be listed increasingly and `-k3r` means the reverse. `3n` means they are treated as numeric. 
  - `sed` command is used to switch the "?", which is encoded to be missing data, to "-";
  - new files are saves as incr\_maize\_chr$i.txt / incr\_teosinte\_chr$i.txt if their position is listed increasingly; decr\_maize\_chr$i.txt / decr\_teosinte\_chr$i.txt if their position is listed decreasingly.
-# _File checking_  
+# _Document classifying_  
   
 
+	$ mkdir maize teosinte process_file
+	$ mv decr_maize* incr_maize* maize_m* maize_u* ./maize
+	$ mv decr_teosinte* incr_teosinte* teosinte_m* teosinte_u* ./teosinte
+	$ mv * ./process_file   
+ - `mkdir` command is to make sub-directories under this directory;
+ - `mv` commands are to move files to different directories;
+ - Here we moved 12 maize-related files to `./maize` directory; 12 teosinte-related files to `./teosinte` directory; the other files generated during the above process and also the original 3 files are moved to `./process\_file`.
+ 
+Then we want to check if the files are correctly generated. Here we use `wc -l` command to see how many lines each file contains. `cd` command helps us go into different repositories. Within `./maize` and `./teosinte`, do `wc -l *` respectively.Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome. The results (part) are listed below:  
 
- | Chr. | $wc -l | $wc -l |  file_name |
- |:-----: |:-----:|:-----:|:-----:| 
- | 1 | 155 | 156 | incr_maize_chr1.txt|  
- | 2 | 127 | 128 | incr_maize_chr2.txt|  
- | 3 | 107 | 108 | incr_maize_chr3.txt|  
- | 4 | 91 | 92 | incr_maize_chr4.txt|  
- | 5 | 122 | 123 | incr_maize_chr5.txt|  
- | 6 | 76 | 77 | incr_maize_chr6.txt|  
- | 7 |  97| 98 | incr_maize_chr7.txt|  
- | 8 | 62 | 63 | incr_maize_chr8.txt|  
- | 9 | 60 | 61 | incr_maize_chr9.txt|  
- | 10 | 53 | 54 | incr_maize_chr10.txt|  
- | multiple | 5 | 6 | maize_multiple.txt|  
- | unknown | 26 | 27 | maize_unknown.txt|  
-  
+
+	  
 
 
  | Chr. | $wc -l | $wc -l | file_name1 | file_name2 |
@@ -114,4 +120,8 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  | 9 | 60 | 61 | incr_maize_chr9.txt|  incr_teosinte_chr9.txt |
  | 10 | 53 | 54 | incr_maize_chr10.txt|  incr_teosinte_chr10.txt |
  | multiple | 5 | 6 | maize_multiple.txt| teosinte_multiple.txt |
- | unknown | 26 | 27 | maize_unknown.txt| teosinte_unknown.txt |
+ | unknown | 26 | 27 | maize_unknown.txt| teosinte_unknown.txt |   
+ 
+Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.
+
+:raising_hand: **_All 44 files are available now!!!_** 
