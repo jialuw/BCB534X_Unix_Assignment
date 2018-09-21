@@ -82,8 +82,8 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - new files are saves as incr\_maize\_chr$i.txt / incr\_teosinte\_chr$i.txt if their position is listed increasingly; decr\_maize\_chr$i.txt / decr\_teosinte\_chr$i.txt if their position is listed decreasingly.
 # _File checking_
 
-|	chr.	|	wc -l	|	wc -l	|	file_name		|
-|	1	|	155	|	156	|	incr_maize_chr1.txt		|
+| chr. | wc -l | wc -l |file_name |
+ |1	 |155 |156 |incr_maize_chr1.txt	 |
 |	10	|	53	|	54	|	incr_maize_chr10.txt		|
 |	2	|	127	|	128	|	incr_maize_chr2.txt		|
 |	3	|	107	|	108	|	incr_maize_chr3.txt		|
