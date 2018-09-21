@@ -1,12 +1,3 @@
-#**UNIX_Assignment** 
-***
-####Files that will be used:  
-- [x] fang_et_al_genotypes.txt   
-- [x] snp_position.txt
-- [x]transpose.awk  
- 
-***
-
 
 # _Data Inspection_    
 ## fang\_et\_al\_genotypes.txt  
