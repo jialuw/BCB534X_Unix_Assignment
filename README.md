@@ -1,4 +1,3 @@
-
 # _Data Inspection_    
 ## fang\_et\_al\_genotypes.txt  
   
@@ -34,14 +33,15 @@ _LINE:_  `$ wc -l snp_position.txt`
 **_Summary_**  
 From the above, we know that `snp\_position.txt` file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
 
-# _Data Processing_ 
-##1. Extract SNP information   
+# _Data Processing_   
+
+## 1. Extract SNP information   
 	$ cut -f 1,3,4 snp_position.txt | sort -k1,1 > snp_infor.txt  
   
  -  `cut` command is to extract three needed columns from the original file;     
  -  `sort` command is to do sorting by the 1st column (SNP_ID).    
    
-##2. Separate _Maize_ and _Teosinte_ genotypes   
+## 2. Separate _Maize_ and _Teosinte_ genotypes   
 	$ grep -E "(ZMMIL|ZMMLR|ZMMMR|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk  > maize_genotype.txt  
 	$ sed 's/Sample_ID/SNP_ID/' maize_genotype.txt | sort –k1,1 > maize_sgenotype.txt 
 	$ grep -E "(ZMPBA|ZMPIL|ZMPJA|Group)" fang_et_al_genotypes.txt | cut -f 1,4-986 |awk -f transpose.awk > teosinte_genotype.txt  
@@ -53,13 +53,13 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
  - `sort` command is to sort by the 1st column;
  - new files saved as "maize\_sgenotype.txt" and "teosinte\_sgenotype.txt".  
 
-##3. Combine genotype with SNP position      
+## 3. Combine genotype with SNP position      
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt maize_sgenotype.txt > maize_joint.txt  
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt teosinte_sgenotype.txt > teosinte_joint.txt				
  - `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
  - new file saved as "maize_joint.txt" . 
  
-##4. Separate SNPs based on Chromosome   
+## 4. Separate SNPs based on Chromosome   
 	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'' maize_joint.txt) > maize_chr$i.txt ; done
 	$ awk '$2 == "unknown"' maize_joint.txt > maize_unknown.txt
 	$ awk '$2 == "multiple"' maize_joint.txt > maize_multiple.txt
@@ -70,7 +70,7 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
  - `awk` command is used to first print out header and then print out the records which feature pattern that field2 is the same with value of i;
  - new file saved as "maize_chr$i.txt" and "teosinte_Chr$i.txt", in which i is the number of chromosome.
 
-##5. Sort SNPs based on position 
+## 5. Sort SNPs based on position 
 
 	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3,3n )> incr_maize_chr$i.txt ; done
 	$ for i in {1..10}; do (head -n 1 maize_chr$i.txt && tail -n +2 maize_chr$i.txt | sort -k3r,3n ) | sed 's/?/-/g' > decr_maize_chr$i.txt ; done
@@ -96,7 +96,7 @@ Then we want to check if the files are correctly generated. `cd` command helps u
 Within `./maize` and `./teosinte`, do `wc -l *` respectively to check how many lines each file contains;
 Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome.   
   
-####Compare the result and list them below:  
+#### Compare the result and list them below:  
 
 
 	  
@@ -120,4 +120,4 @@ Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to 
 Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.  
 
 
-####:raising_hand: _All 44 files are ready now!!!_
+#### :raising_hand: _All 44 files are ready now!!!_
