@@ -1,3 +1,5 @@
+#quick way to push to github
+#sh gitup.sh "commit"
 git status
 git add . 
 git commit -m "$1"
