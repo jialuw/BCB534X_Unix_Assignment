@@ -1,5 +1,5 @@
 # UNIX_Assignment  
-#### Jialu Wei
+
 ***
   
 #### Files needed:
@@ -66,13 +66,13 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
  - `awk` command is to transpose the table so that it has the same data frame with snp_infor.txt and we can join them later;
  - `sed` command is change the header in genotype file to the same with SNP file, so that we can join them later;
  - `sort` command is to sort by the 1st column;
- - new files saved as "maize\_sgenotype.txt" and "teosinte\_sgenotype.txt".  
+ - new files saved as `maize_sgenotype.txt` and `teosinte_sgenotype.txt`.  
 
 ## 3. Combine genotype with SNP position      
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt maize_sgenotype.txt > maize_joint.txt  
 	$join -1 1 -2 1 –t $'\t' snp_infor.txt teosinte_sgenotype.txt > teosinte_joint.txt				
- - `join` command is to combine the two file based on the 1st column of snp_infor.txt and the 1st column of maize_transposed_genotype.txt; 
- - new file saved as "maize_joint.txt" . 
+ - `join` command is to combine the two file based on the 1st column of `snp_infor.txt` and the 1st column of `maize_transposed_genotype.txt`; 
+ - new file saved as `maize_joint.txt` . 
  
 ## 4. Separate SNPs based on Chromosome   
 	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'' maize_joint.txt) > maize_chr$i.txt ; done
@@ -83,7 +83,7 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
 	$ awk '$2 == "multiple"' teosinte_joint.txt > teosinte_multiple.txt
  - `for` command is used to do the loop for 10 chromosomes;
  - `awk` command is used to first print out header and then print out the records which feature pattern that field2 is the same with value of i;
- - new file saved as "maize_chr$i.txt" and "teosinte_Chr$i.txt", in which i is the number of chromosome.
+ - new file saved as `maize_chr$i.txt` and `teosinte_Chr$i.txt`, in which i is the number of chromosome.
 
 ## 5. Sort SNPs based on position 
 
