@@ -80,10 +80,11 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  - `sort` command is the key command here. We do the sorting based on the 3rd column, which shows the position of SNP. `-k3` means the result will be listed increasingly and `-k3r` means the reverse. `3n` means they are treated as numeric. 
  - `sed` command is used to switch the "?", which is encoded to be missing data, to "-";
  - new files are saves as incr\_maize\_chr$i.txt / incr\_teosinte\_chr$i.txt if their position is listed increasingly; decr\_maize\_chr$i.txt / decr\_teosinte\_chr$i.txt if their position is listed decreasingly.
-# _File checking_
+# _File checking_  
 
 | chr. | wc -c | wc -c | file_name |
-
+| :-----: | :-----: | :-----: | :-----: | :-----: |
+|1|155|156|incre_maize_chr1.txt|
 									
 									
 									
