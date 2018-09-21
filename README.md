@@ -35,15 +35,15 @@ Up to now, we know that this `fang\_et\_al\_genotypes.txt` file includes **2782 
 
 _(similar with what we do with above)_  
  
-- **Overview**： how the data is formatted `$ head -n 1 snp_position.txt`  
+- **Overview**: how the data is formatted `$ head -n 1 snp_position.txt`  
 	
-- **Columns & Lines**： how many numbers of columns and lines   
+- **Columns & Lines**: how many numbers of columns and lines   
 _COLUMN:_  ``$ awk -F `\t` {print NF; exit} snp_position.txt ``   
 _LINE:_  `$ wc -l snp_position.txt`  
 
-- **File size**： how large is the file `$ du -h snp_position.txt`
+- **File size**: how large is the file `$ du -h snp_position.txt`
 
-- **Inside the file**： open the file to see how the data exactly look like `$ less snp_position_txt`  
+- **Inside the file**: open the file to see how the data exactly look like `$ less snp_position_txt`  
 	
 **_Summary_**  
 From the above, we know that `snp\_position.txt` file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
