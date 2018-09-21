@@ -98,6 +98,6 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
 | multiple | 5 | 6 | maize_multiple.txt|  
 | unknown | 26 | 27 | maize_unknown.txt|
 
- | Chr. | $wc -l |  
- |:-----: |:-----:|  
- |scasv|svas|asvs|
+ | Chr. | $wc -l | $wc -l |  file_name |
+ |:-----: |:-----:|:-----:|:-----:| 
+ |scasv|svas|asvs|asav|avsa|
