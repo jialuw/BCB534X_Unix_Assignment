@@ -46,7 +46,7 @@ _LINE:_  `$ wc -l snp_position.txt`
 - **Inside the file**: open the file to see how the data exactly look like `$ less snp_position_txt`  
 	
 **_Summary_**  
-From the above, we know that `snp\_position.txt` file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes** and some are in multiple chromosomes while some also have unknown position.
+From the above, we know that `snp\_position.txt` file includes **983 SNPs**' position information (ID, chromosome, etc.). Among these, what we are looking for are in **column 1, 3 and 4 **. These SNPs are in **10 chromosomes**; some are in **multiple chromosomes** or **multiple positions** in a specific chromosome; some have **unknown** position.
 
 # _Data Processing_   
 
@@ -109,7 +109,9 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
  
 Then we want to check if the files are correctly generated. `cd` command helps us go into different repositories.   
 Within `./maize` and `./teosinte`, do `wc -l *` respectively to check how many lines each file contains;
-Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome.   
+Within `./process_file`:  
+do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome;
+do ` awk '$3 =="multiple"' snp_infor.txt | cut -f 2-3 | sort -k1,1 | uniq -c` to check in which chromosome there are SNPs with multiple positions.
   
 #### Compare the result and list them below:
 ( _only increasing-position files are shown here_ )   
@@ -118,22 +120,27 @@ Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to 
 	  
 
 
- | Chr. | $wc -l | $wc -l | file_name1 | file_name2 |
- |:-----: |:-----:|:-----:|:-----:|:-----:|
- | 1 | 155 | 156 | incr_maize_chr1.txt|  incr_teosinte_chr1.txt |
- | 2 | 127 | 127 | incr_maize_chr2.txt|  incr_teosinte_chr2.txt |
- | 3 | 107 | 108 | incr_maize_chr3.txt|  incr_teosinte_chr3.txt |
- | 4 | 91 | 89 | incr_maize_chr4.txt|  incr_teosinte_chr4.txt |
- | 5 | 122 | 123 | incr_maize_chr5.txt|  incr_teosinte_chr5.txt |
- | 6 | 76 | 74 | incr_maize_chr6.txt|  incr_teosinte_chr6.txt |
- | 7 |  97| 97 | incr_maize_chr7.txt|  incr_teosinte_chr7.txt |
- | 8 | 62 | 63 | incr_maize_chr8.txt|  incr_teosinte_chr8.txt |
- | 9 | 60 | 58 | incr_maize_chr9.txt|  incr_teosinte_chr9.txt |
- | 10 | 53 | 54 | incr_maize_chr10.txt|  incr_teosinte_chr10.txt |
- | multiple | 6 | 18 | maize_multiple.txt| teosinte_multiple.txt |
- | unknown | 27 | 28 | maize_unknown.txt| teosinte_unknown.txt |   
+ | Chr. | $uniq -c (Chr.)| $wc -l (files) | "multiple" in $Position |file_name1 | file_name2 |
+ |:-----: |:-----:|:-----:|:-----:|:-----:|:-----:|
+ | 1 | 155 | 156 | 0 |incr_maize_chr1.txt|  incr_teosinte_chr1.txt |
+ | 2 | 127 | 127 | 1 |incr_maize_chr2.txt|  incr_teosinte_chr2.txt |
+ | 3 | 107 | 108 | 0 |incr_maize_chr3.txt|  incr_teosinte_chr3.txt |
+ | 4 | 91 | 89 | 3 |incr_maize_chr4.txt|  incr_teosinte_chr4.txt |
+ | 5 | 122 | 123 | 0 |incr_maize_chr5.txt|  incr_teosinte_chr5.txt |
+ | 6 | 76 | 74 | 3 |incr_maize_chr6.txt|  incr_teosinte_chr6.txt |
+ | 7 |  97| 97 | 1 |incr_maize_chr7.txt|  incr_teosinte_chr7.txt |
+ | 8 | 62 | 63 | 0 |incr_maize_chr8.txt|  incr_teosinte_chr8.txt |
+ | 9 | 60 | 58 | 3 |incr_maize_chr9.txt|  incr_teosinte_chr9.txt |
+ | 10 | 53 | 54 | 0 |incr_maize_chr10.txt|  incr_teosinte_chr10.txt |
+ | multiple | 6 | 18 | (11) |maize_multiple.txt| teosinte_multiple.txt |
+ | unknown | 27 | 28 | 0 |maize_unknown.txt| teosinte_unknown.txt |   
  
-Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.  
+
+To check if we have correct result, we use this rule : `$3 = $2 - $4 + 1`, in which `$` means column.  
+`$2` shows how many SNPs in corresponding Chromosome;
+`$3` shows how many SNPs in corresponding files;
+`$4` shows how many SNPs in the corresponding Chromosome which is coded "multiple" in position;
+`1` means the header line of files. 
 
 
 #### :raising_hand: _All 44 files are ready now!!!_
