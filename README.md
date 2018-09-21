@@ -75,12 +75,12 @@ From the above, we know that `snp\_position.txt` file includes **983 SNPs**' pos
  - new file saved as `maize_joint.txt` . 
  
 ## 4. Separate SNPs based on Chromosome   
-	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'' maize_joint.txt) > maize_chr$i.txt ; done
-	$ awk '$2 == "unknown"' maize_joint.txt > maize_unknown.txt
-	$ awk '$2 == "multiple"' maize_joint.txt > maize_multiple.txt
-	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' teosinte_joint.txt && awk '$2 == '$i'' teosinte_joint.txt) > teosinte_chr$i.txt ; done
-	$ awk '$2 == "unknown"' teosinte_joint.txt > teosinte_unknown.txt
-	$ awk '$2 == "multiple"' teosinte_joint.txt > teosinte_multiple.txt
+	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == '$i'&& $3 != "multiple"' maize_joint.txt) > maize_chr$i.txt ; done
+	$ (awk '$1 ~ /SNP/' maize_joint.txt && awk '$3 == "unknown"' maize_joint.txt )> maize_unknown.txt
+	$ (awk '$1 ~ /SNP/' maize_joint.txt && awk '$2 == "multiple" || $3 == "multiple"' maize_joint.txt )> maize_multiple.txt
+	$ for i in {1..10} ; do (awk '$1 ~ /SNP/' teosinte_joint.txt && awk '$2 == '$i' && $3 != "multiple"' teosinte_joint.txt) > teosinte_chr$i.txt ; done
+	$ (awk '$1 ~ /SNP/' teosinte_joint.txt && awk '$3 == "unknown"' teosinte_joint.txt )> teosinte_unknown.txt
+	$ (awk '$1 ~ /SNP/' teosinte_joint.txt && awk '$2 == "multiple" || $3 == "multiple" ' teosinte_joint.txt) > teosinte_multiple.txt
  - `for` command is used to do the loop for 10 chromosomes;
  - `awk` command is used to first print out header and then print out the records which feature pattern that field2 is the same with value of i;
  - new file saved as `maize_chr$i.txt` and `teosinte_Chr$i.txt`, in which i is the number of chromosome.
@@ -121,17 +121,17 @@ Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to 
  | Chr. | $wc -l | $wc -l | file_name1 | file_name2 |
  |:-----: |:-----:|:-----:|:-----:|:-----:|
  | 1 | 155 | 156 | incr_maize_chr1.txt|  incr_teosinte_chr1.txt |
- | 2 | 127 | 128 | incr_maize_chr2.txt|  incr_teosinte_chr2.txt |
+ | 2 | 127 | 127 | incr_maize_chr2.txt|  incr_teosinte_chr2.txt |
  | 3 | 107 | 108 | incr_maize_chr3.txt|  incr_teosinte_chr3.txt |
- | 4 | 91 | 92 | incr_maize_chr4.txt|  incr_teosinte_chr4.txt |
+ | 4 | 91 | 89 | incr_maize_chr4.txt|  incr_teosinte_chr4.txt |
  | 5 | 122 | 123 | incr_maize_chr5.txt|  incr_teosinte_chr5.txt |
- | 6 | 76 | 77 | incr_maize_chr6.txt|  incr_teosinte_chr6.txt |
- | 7 |  97| 98 | incr_maize_chr7.txt|  incr_teosinte_chr7.txt |
+ | 6 | 76 | 74 | incr_maize_chr6.txt|  incr_teosinte_chr6.txt |
+ | 7 |  97| 97 | incr_maize_chr7.txt|  incr_teosinte_chr7.txt |
  | 8 | 62 | 63 | incr_maize_chr8.txt|  incr_teosinte_chr8.txt |
- | 9 | 60 | 61 | incr_maize_chr9.txt|  incr_teosinte_chr9.txt |
+ | 9 | 60 | 58 | incr_maize_chr9.txt|  incr_teosinte_chr9.txt |
  | 10 | 53 | 54 | incr_maize_chr10.txt|  incr_teosinte_chr10.txt |
- | multiple | 5 | 6 | maize_multiple.txt| teosinte_multiple.txt |
- | unknown | 26 | 27 | maize_unknown.txt| teosinte_unknown.txt |   
+ | multiple | 6 | 18 | maize_multiple.txt| teosinte_multiple.txt |
+ | unknown | 27 | 28 | maize_unknown.txt| teosinte_unknown.txt |   
  
 Note that the lines in each file are one more than the SNP number in each chromosome respectively, which is due to the header line in final file.  
 
