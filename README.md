@@ -137,9 +137,9 @@ do ` awk '$3 =="multiple"' snp_infor.txt | cut -f 2-3 | sort -k1,1 | uniq -c` to
  
 
 To check if we have correct result, we use this rule : `$3 = $2 - $4 + 1`, in which `$` means column.  
-`$2` shows how many SNPs in corresponding Chromosome;
-`$3` shows how many SNPs in corresponding files;
-`$4` shows how many SNPs in the corresponding Chromosome which is coded "multiple" in position;
+`$2` shows how many SNPs in corresponding Chromosome;  
+`$3` shows how many SNPs in corresponding files;  
+`$4` shows how many SNPs in the corresponding Chromosome which is coded "multiple" in position;  
 `1` means the header line of files. 
 
 
