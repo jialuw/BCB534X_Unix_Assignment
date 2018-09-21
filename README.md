@@ -1,3 +1,18 @@
+# UNIX_Assignment  
+#### Jialu Wei
+***
+  
+#### Files needed:
+- [x] fang_et_al_genotypes.txt
+- [x] snp_position.txt
+- [x] transpose.txt
+  
+#### Work flow:
+- [x] Data inspection  
+- [x] Data processing
+- [x] Document classfying 
+  
+***  
 # _Data Inspection_    
 ## fang\_et\_al\_genotypes.txt  
   
@@ -96,7 +111,8 @@ Then we want to check if the files are correctly generated. `cd` command helps u
 Within `./maize` and `./teosinte`, do `wc -l *` respectively to check how many lines each file contains;
 Within `./process_file`, do `cut -f 3 snp_infor.txt | sort -k1,1 | uniq -c ` to check the SNP number in each chromosome.   
   
-#### Compare the result and list them below:  
+#### Compare the result and list them below:
+( _only increasing-position files are shown here_ )   
 
 
 	  
