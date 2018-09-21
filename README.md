@@ -85,3 +85,7 @@ From the above, we know that snp\_position.txt file includes **983 SNPs**' posit
  | Chr. |$wc -l |$wc -l | file_name |  
  | :-----: | :-----: | :-----:| :-----: | :-----: |  
  | -----| ----- | -----| ----- | ----- |
+
+ | chr | savs |  
+ |:-----: |:-----:|  
+ |scasv|svas|asvs|
